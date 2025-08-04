@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>CarbonCompliance | Endpoint Compliance Monitor</title>
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="CarbonCompliance Endpoint Compliance Monitor - Real-time monitoring of disk encryption, OS updates, and system security across your infrastructure.">
+  <meta name="keywords" content="endpoint compliance, security monitoring, disk encryption, OS updates, system health, compliance dashboard">
+  <meta name="author" content="Carbonteq">
+  <meta name="robots" content="index, follow">
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.carbonteq.cloud/">
+  <meta property="og:title" content="CarbonCompliance | Endpoint Compliance Monitor">
+  <meta property="og:description" content="Real-time endpoint compliance monitoring with disk encryption and OS update tracking.">
+  <meta property="og:image" content="https://www.carbonteq.cloud/logo.png">
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://www.carbonteq.cloud/">
+  <meta property="twitter:title" content="CarbonCompliance | Endpoint Compliance Monitor">
+  <meta property="twitter:description" content="Real-time endpoint compliance monitoring with disk encryption and OS update tracking.">
+  <meta property="twitter:image" content="https://www.carbonteq.cloud/logo.png">
+  <!-- Business Schema Markup -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Carbonteq",
+    "url": "https://www.carbonteq.cloud",
+    "logo": "https://www.carbonteq.cloud/logo.png",
+    "description": "AI and cloud computing services for business transformation",
+    "address": {
+      "@type": "PostalAddress",
+      "addressCountry": "US"
+    },
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "contactType": "customer service",
+      "email": "contact@carbonteq.cloud"
+    },
+    "sameAs": [
+      "https://github.com/saadhaniftaj"
+    ]
+  }
+  </script>
+  <link href="https://fonts.googleapis.com/css?family=Inter:400,700,900&display=swap" rel="stylesheet">
+    <style>
+    :root {
+      --spotify-black: #191414;
+      --spotify-dark: #121212;
+      --spotify-green: #1db954;
+      --spotify-yellow: #ffe066;
+      --spotify-light: #fff;
+      --spotify-grey: #b3b3b3;
+      --spotify-card: #232323;
+      --spotify-card-hover: #25292e;
+        }
+    html {scroll-behavior:smooth;}
+        body {
+      font-family: 'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+      margin:0; background: var(--spotify-black); color: var(--spotify-light);
+      min-height:100vh;
+            overflow-x: hidden;
+    }
+    body::before {
+      content:""; position:fixed; z-index:0; left:0; top:0; width:100vw; height:100vh;
+      background: radial-gradient(ellipse 700px 400px at 15% 15%, #1db95433 0%,transparent 70%), radial-gradient(ellipse 700px 400px at 90% 80%, #ffe06622 0%,transparent 66%);
+      pointer-events:none;
+      opacity: 0.65;
+        }
+    nav {
+      position:fixed; top:0; left:0; width:100%; z-index:100;
+      height:90px;
+      background:var(--spotify-black);
+      display:flex; align-items: center; box-shadow:0 1px 0 #1112;
+      border-bottom: 1px solid #232323;
+        }
+    .nav-content { width:100%; max-width:1200px; margin:0 auto; display:flex; justify-content:center; align-items:center; padding:0 2rem; position:relative; height:100%; }
+    .logo {
+      display: flex; align-items: center; font-weight:900; font-size:2.1rem; letter-spacing: -.03em;
+      color: var(--spotify-green);
+      text-decoration: none;
+      margin: 0 auto;
+      justify-content: center;
+      flex: 1;
+    }
+    .logo img {
+      height:62px;
+      width:240px;
+      margin-right:0;
+      border-radius: 12px;
+      box-shadow:0 0 12px #1db95411;
+      object-fit:cover;
+      display: block;
+    }
+    .nav-links{display: none;}
+    .nav-cta {display: none;}
+    .metrics-section {
+      margin-top: 90px;
+      padding: 2.5rem 0 1.5rem;
+      background: transparent;
+    }
+    .metrics-grid {
+      display: flex; flex-wrap: wrap; gap: 2.5rem; justify-content: center;
+      margin-bottom: 2.5rem;
+    }
+    .metric-card {
+      background: var(--spotify-card);
+      border-radius: 16px;
+      box-shadow: 0 3px 18px #1db9541a, 0 1.5px 8px #12121210;
+      padding: 1.7rem 1.3rem; min-width: 220px; min-height: 120px;
+      border: 1px solid #222;
+      display: flex; flex-direction: column; align-items: flex-start;
+      margin-bottom: 1.2rem;
+    }
+    .metric-card strong { color: var(--spotify-green); font-size: 1.13rem; margin-bottom: 0.5rem; }
+    .metric-card .value { font-size: 1.7rem; font-weight: 900; color: var(--spotify-yellow); }
+    .metric-card .desc { color: #cfcfcf; font-size: 1.01rem; margin-top: 0.5rem; }
+    .error-log { max-height: 200px; overflow-y: auto; background: #222; color: #f88; padding: 10px; border-radius: 6px; font-size: 0.95em; }
+    .workload-list { color: #ffe066; font-weight: 700; }
+    .refresh-btn { margin-top: 1.2rem; }
+    .bg-animation { position: fixed; z-index: -1; top: 0; left: 0; width:100vw; height:100vh; pointer-events:none; }
+    .particle {
+      position: absolute;
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      opacity: 0.85;
+      animation: floatUp 12s linear infinite;
+    }
+    .particle.green { background: #1DB954; }
+    .particle.yellow { background: #ffe066; }
+    @keyframes floatUp {
+      0% { transform: translateY(100vh); opacity: 0.7; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { transform: translateY(-10vh); opacity: 0; }
+    }
+    .footer-credit-devops { color:#92a4c7; font-size:.89rem; margin-top:2.2rem; text-align:center; opacity:0.7; }
+    .section-title {
+      text-align: center;
+      font-size: 3.2rem;
+      letter-spacing: -1px;
+      margin-top: 1.7rem;
+      margin-bottom: 2.1rem;
+      font-weight: 900;
+      font-family: 'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+      background: linear-gradient(90deg, #1db954 30%, #ffe066 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      color: #1db954; /* fallback */
+      filter: brightness(1.08) drop-shadow(0 0 8px #ffe06666);
+    }
+    .action-btn {
+      display: inline-block;
+      margin: 1rem;
+      background: linear-gradient(90deg, #1db954, #ffe066, #39ff8e, #f8f9fa, #1db954 90%);
+      background-size: 300% 300%;
+      animation: rainbow 2.5s linear infinite;
+      color: #191414;
+      font-weight: 900;
+      border: none;
+      border-radius: 50px;
+      padding: 1em 2.7em;
+      font-size: 1.18rem;
+      letter-spacing: .02em;
+      cursor: pointer;
+      box-shadow: 0 6px 26px #1db95425, 0 2px 8px #19141419;
+      transition: background 0.19s, color 0.19s, transform 0.15s;
+      text-decoration: none;
+      text-align: center;
+    }
+    .action-btn:hover {
+      filter: brightness(1.15) drop-shadow(0 0 12px #ffe066cc);
+      transform: scale(1.04) translateY(-2px);
+    }
+    .carbon-sync-title {
+      text-align: center;
+      font-size: 4rem;
+      letter-spacing: -1px;
+      margin-top: 2.7rem;
+      margin-bottom: 1.3rem;
+      font-weight: 900;
+      font-family: 'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+      background: linear-gradient(90deg, #1db954 30%, #ffe066 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      color: #1db954; /* fallback */
+      filter: brightness(1.08) drop-shadow(0 0 8px #ffe06666);
+    }
+    .options-btn {
+      display: block;
+      margin: 1.2rem auto 0 auto;
+      background: var(--spotify-card);
+      color: var(--spotify-green);
+      font-weight: 800;
+      border: 2px solid var(--spotify-green);
+      border-radius: 30px;
+      padding: 1.1em 2.9em;
+      font-size: 1.25rem;
+      letter-spacing: .01em;
+      cursor: pointer;
+      box-shadow: 0 2px 8px #19141419;
+      transition: background 0.19s, color 0.19s, border 0.15s;
+      text-decoration: none;
+      text-align: center;
+    }
+    .options-btn:hover {
+      background: var(--spotify-green);
+      color: var(--spotify-black);
+      border: 2px solid var(--spotify-green);
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      left: 0; top: 0; width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.45);
+      align-items: center; justify-content: center;
+    }
+    .modal.active { display: flex; }
+    .modal-content {
+      background: #232323;
+      padding: 2.2rem 2.5rem;
+      border-radius: 18px;
+      box-shadow: 0 8px 32px #1db95422;
+      min-width: 320px;
+      max-width: 95vw;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .modal-content label {
+      font-weight: 700;
+      margin-top: 1.1em;
+      margin-bottom: 0.3em;
+      color: var(--spotify-green);
+      align-self: flex-start;
+    }
+    .modal-content input {
+      width: 100%;
+      padding: 0.7em 1em;
+      border-radius: 7px;
+      border: 1px solid #444;
+      background: #191414;
+      color: #fff;
+      font-size: 1.08rem;
+      margin-bottom: 1em;
+    }
+    .modal-content button {
+      margin-top: 1.2em;
+      background: var(--spotify-green);
+      color: var(--spotify-black);
+      font-weight: 800;
+      border: none;
+      border-radius: 30px;
+      padding: 0.7em 2.2em;
+      font-size: 1.08rem;
+      cursor: pointer;
+      transition: background 0.19s, color 0.19s;
+    }
+    .modal-content button:hover {
+      background: #fff;
+      color: var(--spotify-green);
+    }
+    .modal-close {
+      position: absolute;
+      top: 1.2rem;
+      right: 1.7rem;
+      font-size: 1.7rem;
+      color: #ffe066;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-weight: 900;
+    }
+    .endpoint-card { 
+      background: var(--spotify-card); 
+      border-radius: 16px; 
+      box-shadow: 0 3px 18px #1db9541a; 
+      padding: 2rem; 
+      margin: 1rem; 
+      display: inline-block; 
+      min-width: 300px; 
+      cursor: pointer; 
+      text-align: center; 
+      transition: box-shadow 0.2s; 
+    }
+    .endpoint-card:hover { 
+      box-shadow: 0 6px 24px #1db95433; 
+      background: var(--spotify-card-hover); 
+    }
+    .detail-section { 
+      background: var(--spotify-dark); 
+      border-radius: 16px; 
+      padding: 2rem; 
+      margin: 2rem auto; 
+      max-width: 700px; 
+      box-shadow: 0 2px 12px #1db95422; 
+    }
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    #main-content {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: flex-start;
+      width: 100%;
+      margin-top: 2rem;
+    }
+    .compliance-status {
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .compliance-compliant {
+      background: #1db954;
+      color: #191414;
+    }
+    .compliance-non-compliant {
+      background: #ff6b6b;
+      color: #fff;
+    }
+    .compliance-warning {
+      background: #ffe066;
+      color: #191414;
+    }
+    .charts-section {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      justify-content: center;
+      margin-top: 2rem;
+    }
+    .chart-container {
+      background: var(--spotify-card);
+      border-radius: 16px;
+      padding: 1.5rem;
+      min-width: 400px;
+      box-shadow: 0 3px 18px #1db9541a;
+    }
+    .chart-title {
+      color: var(--spotify-green);
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+    @keyframes rainbow {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    </style>
+</head>
+<body>
+    <div class="bg-animation" id="bgParticles"></div>
+    <nav>
+      <div class="nav-content">
+        <a class="logo" href="#home">
+          <img src="/static/carbonteq_logo.jpeg" alt="CarbonCompliance Logo"/>
+        </a>
+      </div>
+    </nav>
+    <section id="metrics" class="metrics-section">
+      <div class="container">
+        <div class="carbon-sync-title">CarbonCompliance</div>
+        <h2 class="section-title">Endpoint Compliance Monitor</h2>
+        
+        <!-- Action Buttons -->
+        <div style="text-align: center; margin-bottom: 2rem;">
+          <button class="action-btn" onclick="showDashboard()">Dashboard</button>
+          <button class="action-btn" onclick="showAddEndpoint()">Add Endpoint</button>
+          <button class="action-btn" onclick="refreshData()">Refresh Data</button>
+          <button class="action-btn" onclick="showCertificateTemplates()">Certificate Templates</button>
+        </div>
+        
+        <div id="main-content">
+          <!-- Dashboard content will be loaded here -->
+        </div>
+      </div>
+    </section>
+    <div class="footer-credit-devops">saadhaniftaj devops project 1</div>
+    
+    <!-- Add Endpoint Modal -->
+    <div class="modal" id="addEndpointModal">
+      <div class="modal-content">
+        <button class="modal-close" onclick="closeModal('addEndpointModal')">&times;</button>
+        <h3 style="margin-bottom:1.2em; color:var(--spotify-yellow);">Add New Endpoint</h3>
+        <form id="addEndpointForm">
+          <label for="endpointName">Endpoint Name</label>
+          <input type="text" id="endpointName" name="endpointName" placeholder="e.g. Workstation-01" required />
+          
+          <label for="endpointHostname">Hostname</label>
+          <input type="text" id="endpointHostname" name="endpointHostname" placeholder="e.g. workstation-01.local" required />
+          
+          <label for="endpointIP">IP Address</label>
+          <input type="text" id="endpointIP" name="endpointIP" placeholder="e.g. 192.168.1.100" required />
+          
+          <label for="endpointType">Endpoint Type</label>
+          <select id="endpointType" name="endpointType" style="width: 100%; padding: 0.7em 1em; border-radius: 7px; border: 1px solid #444; background: #191414; color: #fff; font-size: 1.08rem; margin-bottom: 1em;">
+            <option value="workstation">Workstation</option>
+            <option value="server">Server</option>
+            <option value="laptop">Laptop</option>
+            <option value="mobile">Mobile Device</option>
+          </select>
+          
+          <label for="endpointDescription">Description</label>
+          <input type="text" id="endpointDescription" name="endpointDescription" placeholder="Optional description" />
+          
+          <button type="submit">Add Endpoint</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Certificate Templates Modal -->
+    <div class="modal" id="certificateTemplatesModal">
+      <div class="modal-content" style="max-width:600px;">
+        <button class="modal-close" onclick="closeModal('certificateTemplatesModal')">&times;</button>
+        <h3 style="margin-bottom:1.2em; color:var(--spotify-yellow);">Compliance Certificate Templates</h3>
+        <div id="certificateTemplatesList">
+          <!-- Templates will be loaded here by JS -->
+        </div>
+      </div>
+    </div>
+
+    <script>
+    let currentView = 'dashboard';
+    let endpoints = [];
+    let complianceData = {};
+
+    // Initialize the application
+    document.addEventListener('DOMContentLoaded', function() {
+        showDashboard();
+        initParticleAnimation();
+    });
+
+    function showDashboard() {
+        currentView = 'dashboard';
+        loadDashboard();
+    }
+
+    function showAddEndpoint() {
+        document.getElementById('addEndpointModal').classList.add('active');
+    }
+
+    function closeModal(modalId) {
+        document.getElementById(modalId).classList.remove('active');
+    }
+
+    async function loadDashboard() {
+        const content = document.getElementById('main-content');
+        content.innerHTML = '<div style="text-align: center; color: #ffe066; font-size: 1.2rem;">Loading dashboard...</div>';
+        
+        try {
+            // Fetch compliance summary
+            const summaryResponse = await fetch('/api/compliance/summary');
+            const summary = await summaryResponse.json();
+            
+            // Fetch recent reports
+            const reportsResponse = await fetch('/api/compliance/reports');
+            const reports = await reportsResponse.json();
+            
+            displayDashboard(summary, reports);
+        } catch (error) {
+            console.error('Error loading dashboard:', error);
+            content.innerHTML = '<div style="text-align: center; color: #ff6b6b; font-size: 1.2rem;">Error loading dashboard data</div>';
+        }
+    }
+
+    function displayDashboard(summary, reports) {
+        const content = document.getElementById('main-content');
+        
+        let html = `
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <strong>Total Endpoints</strong>
+                    <div class="value">${summary.total_endpoints || 0}</div>
+                    <div class="desc">Monitored devices</div>
+                </div>
+                <div class="metric-card">
+                    <strong>Compliant</strong>
+                    <div class="value">${summary.compliant_count || 0}</div>
+                    <div class="desc">Meeting standards</div>
+                </div>
+                <div class="metric-card">
+                    <strong>Non-Compliant</strong>
+                    <div class="value">${summary.non_compliant_count || 0}</div>
+                    <div class="desc">Requires attention</div>
+                </div>
+                <div class="metric-card">
+                    <strong>Avg Score</strong>
+                    <div class="value">${summary.average_score ? summary.average_score.toFixed(1) + '%' : 'N/A'}</div>
+                    <div class="desc">Overall compliance</div>
+                </div>
+            </div>
+        `;
+
+        // Add recent reports section
+        if (reports && reports.length > 0) {
+            html += `
+                <div class="detail-section">
+                    <h3 style="color: var(--spotify-green); margin-bottom: 1rem;">Recent Compliance Reports</h3>
+                    <div style="max-height: 400px; overflow-y: auto;">
+            `;
+            
+            reports.forEach(report => {
+                const statusClass = report.is_compliant ? 'compliance-compliant' : 'compliance-non-compliant';
+                const statusText = report.is_compliant ? 'Compliant' : 'Non-Compliant';
+                
+                html += `
+                    <div style="background: var(--spotify-card); padding: 1rem; margin: 0.5rem 0; border-radius: 8px; border-left: 4px solid var(--spotify-green);">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                            <strong>${report.hostname}</strong>
+                            <span class="compliance-status ${statusClass}">${statusText}</span>
+                        </div>
+                        <div style="color: #cfcfcf; font-size: 0.9rem;">
+                            <div>Score: ${report.compliance_score}%</div>
+                            <div>Disk Encryption: ${report.disk_encryption_status}</div>
+                            <div>OS Updates: ${report.os_updates_status}</div>
+                            <div>Last Check: ${new Date(report.timestamp).toLocaleString()}</div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            html += `
+                    </div>
+                </div>
+            `;
+        }
+
+        content.innerHTML = html;
+    }
+
+    async function refreshData() {
+        await loadDashboard();
+    }
+
+    // Handle form submission for adding endpoint
+    document.getElementById('addEndpointForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const formData = new FormData(e.target);
+        const endpointData = {
+            name: formData.get('endpointName'),
+            hostname: formData.get('endpointHostname'),
+            ip_address: formData.get('endpointIP'),
+            type: formData.get('endpointType'),
+            description: formData.get('endpointDescription')
+        };
+        
+        try {
+            const response = await fetch('/api/endpoints', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(endpointData)
+            });
+            
+            if (response.ok) {
+                alert('Endpoint added successfully!');
+                closeModal('addEndpointModal');
+                e.target.reset();
+                await loadDashboard();
+            } else {
+                const error = await response.json();
+                alert('Error adding endpoint: ' + (error.detail || 'Unknown error'));
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Error adding endpoint: ' + error.message);
+        }
+    });
+
+    // Particle animation
+    function initParticleAnimation() {
+        const $bg = document.getElementById('bgParticles');
+        const totalParticles = 120;
+        for(let i=0;i<totalParticles;i++){
+            const d = document.createElement('div');
+            d.className = 'particle ' + (Math.random() > 0.5 ? 'green' : 'yellow');
+            d.style.left = Math.random() * 100 + 'vw';
+            d.style.bottom = Math.random() * 100 + 'vh';
+            d.style.animationDelay = (Math.random() * -12) + 's';
+            d.style.animationDuration = (10 + Math.random() * 8) + 's';
+            $bg.appendChild(d);
+        }
+    }
+
+    // Close modal when clicking outside
+    window.onclick = function(event) {
+        const modals = document.querySelectorAll('.modal');
+        modals.forEach(modal => {
+            if (event.target === modal) {
+                modal.classList.remove('active');
+            }
+        });
+    }
+
+    // Certificate templates data
+    const certificateTemplates = [
+      {
+        id: 'cis',
+        name: 'CIS Benchmarks',
+        description: 'Industry-standard security configuration guides for operating systems, cloud providers, and applications.'
+      },
+      {
+        id: 'iso27001',
+        name: 'ISO/IEC 27001',
+        description: 'International standard for information security management systems (ISMS).'
+      },
+      {
+        id: 'soc2',
+        name: 'SOC 2',
+        description: 'Security, availability, processing integrity, confidentiality, and privacy controls for service organizations.'
+      },
+      {
+        id: 'hipaa',
+        name: 'HIPAA',
+        description: 'US law for protecting sensitive patient health information.'
+      },
+      {
+        id: 'pci',
+        name: 'PCI DSS',
+        description: 'Security standard for organizations that handle credit card information.'
+      },
+      {
+        id: 'nist',
+        name: 'NIST 800-53',
+        description: 'Security and privacy controls for federal information systems and organizations.'
+      },
+      {
+        id: 'gdpr',
+        name: 'GDPR',
+        description: 'European regulation for data protection and privacy.'
+      },
+      {
+        id: 'fedramp',
+        name: 'FedRAMP',
+        description: 'US government program for secure cloud services.'
+      }
+    ];
+
+    let imposedCertificates = [];
+
+    async function showCertificateTemplates() {
+      const modal = document.getElementById('certificateTemplatesModal');
+      const list = document.getElementById('certificateTemplatesList');
+      // Fetch imposed certificates from backend
+      try {
+        const resp = await fetch('/api/certificates');
+        const data = await resp.json();
+        imposedCertificates = data.imposed || [];
+      } catch (e) {
+        imposedCertificates = [];
+      }
+      list.innerHTML = certificateTemplates.map(t => {
+        const imposed = imposedCertificates.includes(t.id);
+        return `
+        <div style=\"background: var(--spotify-card); padding: 1rem; margin-bottom: 1rem; border-radius: 8px; border-left: 4px solid var(--spotify-green);\">
+          <div style=\"display: flex; justify-content: space-between; align-items: center;\">
+            <div>
+              <strong style=\"font-size:1.1rem; color:var(--spotify-green);\">${t.name}</strong>
+              <div style=\"color:#cfcfcf; font-size:0.97rem; margin-top:0.2em;\">${t.description}</div>
+            </div>
+            ${imposed
+              ? `<span style=\"color:var(--spotify-yellow);font-weight:900;font-size:1.1rem;\">Imposed</span>`
+              : `<button class=\"action-btn\" style=\"padding:0.5em 1.5em; font-size:1rem; margin:0;\" onclick=\"imposeCertificate('${t.id}')\">Impose</button>`}
+          </div>
+        </div>
+        `;
+      }).join('');
+      modal.classList.add('active');
+    }
+
+    async function imposeCertificate(certId) {
+      // POST to backend
+      try {
+        const resp = await fetch(`/api/certificates/${certId}`, { method: 'POST' });
+        if (resp.ok) {
+          imposedCertificates.push(certId);
+          showCertificateTemplates(); // Refresh modal
+        } else {
+          alert('Failed to impose certificate.');
+        }
+      } catch (e) {
+        alert('Failed to impose certificate.');
+      }
+    }
+    </script>
+</body>
+</html> 

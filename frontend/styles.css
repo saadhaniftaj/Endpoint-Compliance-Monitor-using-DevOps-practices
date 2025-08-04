@@ -1,0 +1,731 @@
+/* CarbonSync Endpoint Compliance Monitor Dashboard CSS */
+
+:root {
+    --spotify-black: #191414;
+    --spotify-dark: #121212;
+    --spotify-green: #1db954;
+    --spotify-yellow: #ffe066;
+    --spotify-light: #fff;
+    --spotify-grey: #b3b3b3;
+    --spotify-card: #232323;
+    --spotify-card-hover: #25292e;
+    --spotify-danger: #e74a3b;
+    --spotify-warning: #f6c23e;
+    --spotify-info: #36b9cc;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    margin: 0;
+    background: var(--spotify-black);
+    color: var(--spotify-light);
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    z-index: 0;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    background: radial-gradient(ellipse 700px 400px at 15% 15%, #1db95433 0%, transparent 70%), 
+                radial-gradient(ellipse 700px 400px at 90% 80%, #ffe06622 0%, transparent 66%);
+    pointer-events: none;
+    opacity: 0.65;
+}
+
+/* Navigation */
+nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 100;
+    height: 90px;
+    background: var(--spotify-black);
+    display: flex;
+    align-items: center;
+    box-shadow: 0 1px 0 #1112;
+    border-bottom: 1px solid #232323;
+}
+
+.nav-content {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 2rem;
+    position: relative;
+    height: 100%;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    font-weight: 900;
+    font-size: 2.1rem;
+    letter-spacing: -.03em;
+    color: var(--spotify-green);
+    text-decoration: none;
+    margin: 0 auto;
+    justify-content: center;
+    flex: 1;
+}
+
+.logo img {
+    height: 62px;
+    width: 240px;
+    margin-right: 0;
+    border-radius: 12px;
+    box-shadow: 0 0 12px #1db95411;
+    object-fit: cover;
+    display: block;
+}
+
+/* Main Content */
+.metrics-section {
+    margin-top: 90px;
+    padding: 2.5rem 0 1.5rem;
+    background: transparent;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+/* Titles */
+.carbon-sync-title {
+    text-align: center;
+    font-size: 4rem;
+    letter-spacing: -1px;
+    margin-top: 2.7rem;
+    margin-bottom: 1.3rem;
+    font-weight: 900;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: linear-gradient(90deg, #1db954 30%, #ffe066 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: #1db954;
+    filter: brightness(1.08) drop-shadow(0 0 8px #ffe06666);
+}
+
+.section-title {
+    text-align: center;
+    font-size: 3.2rem;
+    letter-spacing: -1px;
+    margin-top: 1.7rem;
+    margin-bottom: 2.1rem;
+    font-weight: 900;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: linear-gradient(90deg, #1db954 30%, #ffe066 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: #1db954;
+    filter: brightness(1.08) drop-shadow(0 0 8px #ffe06666);
+}
+
+/* Configuration Section */
+.config-section {
+    width: 100%;
+    margin-bottom: 2.5rem;
+}
+
+.config-card {
+    background: var(--spotify-card);
+    border-radius: 16px;
+    box-shadow: 0 3px 18px #1db9541a, 0 1.5px 8px #12121210;
+    padding: 1.7rem 1.3rem;
+    border: 1px solid #222;
+}
+
+.config-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.config-left {
+    flex: 1;
+    min-width: 300px;
+}
+
+.config-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.config-label {
+    font-weight: 700;
+    color: var(--spotify-green);
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.input-group {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.config-input {
+    flex: 1;
+    padding: 0.7em 1em;
+    border-radius: 7px;
+    border: 1px solid #444;
+    background: #191414;
+    color: #fff;
+    font-size: 1.08rem;
+}
+
+.config-input:focus {
+    outline: none;
+    border-color: var(--spotify-green);
+    box-shadow: 0 0 0 2px #1db95433;
+}
+
+.config-btn {
+    background: var(--spotify-card);
+    color: var(--spotify-green);
+    font-weight: 800;
+    border: 2px solid var(--spotify-green);
+    border-radius: 30px;
+    padding: 0.7em 1.5em;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.19s;
+}
+
+.config-btn:hover {
+    background: var(--spotify-green);
+    color: var(--spotify-black);
+}
+
+.auto-refresh-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--spotify-light);
+}
+
+.auto-refresh-toggle input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--spotify-green);
+}
+
+/* Buttons */
+.fetch-metrics-btn {
+    display: block;
+    margin: 0 auto;
+    background: linear-gradient(90deg, #1db954, #ffe066, #39ff8e, #f8f9fa, #1db954 90%);
+    background-size: 300% 300%;
+    animation: rainbow 2.5s linear infinite;
+    color: #191414;
+    font-weight: 900;
+    border: none;
+    border-radius: 50px;
+    padding: 1em 2.7em;
+    font-size: 1.18rem;
+    letter-spacing: .02em;
+    cursor: pointer;
+    box-shadow: 0 6px 26px #1db95425, 0 2px 8px #19141419;
+    transition: all 0.19s;
+    text-decoration: none;
+    text-align: center;
+}
+
+.fetch-metrics-btn:hover {
+    filter: brightness(1.15) drop-shadow(0 0 12px #ffe066cc);
+    transform: scale(1.04) translateY(-2px);
+}
+
+@keyframes rainbow {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Metrics Grid */
+.metrics-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2.5rem;
+    justify-content: center;
+    margin-bottom: 2.5rem;
+}
+
+.metric-card {
+    background: var(--spotify-card);
+    border-radius: 16px;
+    box-shadow: 0 3px 18px #1db9541a, 0 1.5px 8px #12121210;
+    padding: 1.7rem 1.3rem;
+    min-width: 220px;
+    min-height: 120px;
+    border: 1px solid #222;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 1.2rem;
+    transition: all 0.3s ease;
+}
+
+.metric-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0.5rem 2rem 0 rgba(58, 59, 69, 0.2);
+}
+
+.metric-card strong {
+    color: var(--spotify-green);
+    font-size: 1.13rem;
+    margin-bottom: 0.5rem;
+}
+
+.metric-card .value {
+    font-size: 1.7rem;
+    font-weight: 900;
+    color: var(--spotify-yellow);
+}
+
+.metric-card .desc {
+    color: #cfcfcf;
+    font-size: 1.01rem;
+    margin-top: 0.5rem;
+}
+
+/* Charts Section */
+.charts-section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    justify-content: center;
+    margin-bottom: 2.5rem;
+    width: 100%;
+}
+
+.chart-container {
+    flex: 1;
+    min-width: 300px;
+}
+
+.chart-card {
+    background: var(--spotify-card);
+    border-radius: 16px;
+    box-shadow: 0 3px 18px #1db9541a, 0 1.5px 8px #12121210;
+    padding: 1.7rem 1.3rem;
+    border: 1px solid #222;
+    transition: all 0.3s ease;
+}
+
+.chart-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0.5rem 2rem 0 rgba(58, 59, 69, 0.2);
+}
+
+.chart-card h3 {
+    color: var(--spotify-green);
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.chart-wrapper {
+    position: relative;
+    height: 300px;
+    margin: auto;
+}
+
+/* Section Cards */
+.section-card {
+    background: var(--spotify-card);
+    border-radius: 16px;
+    box-shadow: 0 3px 18px #1db9541a, 0 1.5px 8px #12121210;
+    padding: 1.7rem 1.3rem;
+    border: 1px solid #222;
+    margin-bottom: 2rem;
+    width: 100%;
+    transition: all 0.3s ease;
+}
+
+.section-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0.5rem 2rem 0 rgba(58, 59, 69, 0.2);
+}
+
+.section-header {
+    color: var(--spotify-green);
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.section-header i {
+    color: var(--spotify-yellow);
+}
+
+/* Tables */
+.table-container {
+    overflow-x: auto;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    color: var(--spotify-light);
+}
+
+.data-table th {
+    background-color: #191414;
+    border-top: none;
+    font-weight: 700;
+    color: var(--spotify-green);
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 2px solid #333;
+}
+
+.data-table td {
+    padding: 1rem;
+    border-bottom: 1px solid #333;
+    vertical-align: middle;
+}
+
+.data-table tbody tr:hover {
+    background-color: #25292e;
+}
+
+.text-center {
+    text-align: center;
+}
+
+/* Progress Bars */
+.progress {
+    height: 20px;
+    border-radius: 10px;
+    background: #191414;
+    overflow: hidden;
+    border: 1px solid #333;
+}
+
+.progress-bar {
+    height: 100%;
+    border-radius: 10px;
+    transition: width 0.3s ease;
+}
+
+.progress-bar.bg-success {
+    background: var(--spotify-green);
+}
+
+.progress-bar.bg-danger {
+    background: var(--spotify-danger);
+}
+
+.progress-bar.bg-warning {
+    background: var(--spotify-warning);
+}
+
+/* Status Badges */
+.badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.875rem;
+    font-weight: 700;
+}
+
+.badge-compliant {
+    background-color: var(--spotify-green);
+    color: var(--spotify-black);
+}
+
+.badge-non-compliant {
+    background-color: var(--spotify-danger);
+    color: white;
+}
+
+.badge-warning {
+    background-color: var(--spotify-warning);
+    color: var(--spotify-black);
+}
+
+/* Buttons */
+.btn {
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+    font-size: 0.875rem;
+}
+
+.btn-sm {
+    padding: 0.25rem 0.75rem;
+    font-size: 0.8rem;
+}
+
+.btn-outline-info {
+    background: transparent;
+    color: var(--spotify-info);
+    border: 2px solid var(--spotify-info);
+}
+
+.btn-outline-info:hover {
+    background: var(--spotify-info);
+    color: var(--spotify-black);
+}
+
+/* Modals */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.45);
+    align-items: center;
+    justify-content: center;
+}
+
+.modal.active {
+    display: flex;
+}
+
+.modal-content {
+    background: #232323;
+    padding: 2.2rem 2.5rem;
+    border-radius: 18px;
+    box-shadow: 0 8px 32px #1db95422;
+    min-width: 320px;
+    max-width: 95vw;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
+.large-modal {
+    min-width: 600px;
+    max-width: 90vw;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.modal-close {
+    position: absolute;
+    top: 1.2rem;
+    right: 1.7rem;
+    font-size: 1.7rem;
+    color: #ffe066;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-weight: 900;
+}
+
+.modal-content h3 {
+    color: var(--spotify-yellow);
+    margin-bottom: 1rem;
+}
+
+/* Loading Spinner */
+.spinner-border {
+    width: 3rem;
+    height: 3rem;
+    border: 0.25em solid #333;
+    border-right-color: var(--spotify-green);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 1rem;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Background Animation */
+.bg-animation {
+    position: fixed;
+    z-index: -1;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+}
+
+.particle {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    opacity: 0.85;
+    animation: floatUp 12s linear infinite;
+}
+
+.particle.green {
+    background: #1DB954;
+}
+
+.particle.yellow {
+    background: #ffe066;
+}
+
+@keyframes floatUp {
+    0% {
+        transform: translateY(100vh);
+        opacity: 0.7;
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-10vh);
+        opacity: 0;
+    }
+}
+
+/* Footer */
+.footer-credit-devops {
+    color: #92a4c7;
+    font-size: .89rem;
+    margin-top: 2.2rem;
+    text-align: center;
+    opacity: 0.7;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        padding: 0 1rem;
+    }
+    
+    .carbon-sync-title {
+        font-size: 2.5rem;
+    }
+    
+    .section-title {
+        font-size: 2rem;
+    }
+    
+    .config-content {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .config-left,
+    .config-right {
+        min-width: auto;
+    }
+    
+    .charts-section {
+        flex-direction: column;
+    }
+    
+    .chart-container {
+        min-width: auto;
+    }
+    
+    .metrics-grid {
+        gap: 1rem;
+    }
+    
+    .metric-card {
+        min-width: 200px;
+    }
+    
+    .data-table {
+        font-size: 0.875rem;
+    }
+    
+    .data-table th,
+    .data-table td {
+        padding: 0.5rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .carbon-sync-title {
+        font-size: 2rem;
+    }
+    
+    .section-title {
+        font-size: 1.5rem;
+    }
+    
+    .metric-card {
+        min-width: 180px;
+        padding: 1rem;
+    }
+    
+    .metric-card .value {
+        font-size: 1.4rem;
+    }
+    
+    .fetch-metrics-btn {
+        font-size: 1rem;
+        padding: 0.8em 2em;
+    }
+}
+
+/* Animation for data updates */
+.fade-in {
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+} 

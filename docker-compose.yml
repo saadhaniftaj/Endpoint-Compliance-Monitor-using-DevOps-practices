@@ -1,0 +1,71 @@
+version: "3.8"
+
+services:
+  backend:
+    build: .
+    container_name: compliance-backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data:/app/data
+      - ./backend/reports.db:/app/reports.db
+    environment:
+      - PYTHONPATH=/app
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import requests; requests.get('http://localhost:8000/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - compliance-network
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    container_name: compliance-frontend
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - backend
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:80/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - compliance-network
+    environment:
+      - NGINX_HOST=localhost
+      - NGINX_PORT=80
+
+  # Optional: Streamlit dashboard (alternative to HTML frontend)
+  dashboard:
+    build:
+      context: .
+      dockerfile: Dockerfile.dashboard
+    container_name: compliance-dashboard
+    ports:
+      - "8501:8501"
+    environment:
+      - API_BASE_URL=http://backend:8000
+    depends_on:
+      - backend
+    restart: unless-stopped
+    networks:
+      - compliance-network
+    profiles:
+      - streamlit  # Only start when explicitly requested
+
+networks:
+  compliance-network:
+    driver: bridge
+
+volumes:
+  data:
+    driver: local 
