@@ -1,4 +1,4 @@
-# 🛡️ Endpoint Compliance Monitor
+# 🛡️ CarbonCompliance - Endpoint Compliance Monitor
 
 A comprehensive endpoint compliance monitoring system that tracks disk encryption, OS updates, and system security status across your infrastructure in real time. Developed as a final project for a DevOps internship, this system leverages modern DevOps practices to ensure scalability, security, and maintainability.
 
