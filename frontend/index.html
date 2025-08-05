@@ -379,10 +379,10 @@
         
         <!-- Action Buttons -->
         <div style="text-align: center; margin-bottom: 2rem;">
-          <button class="action-btn" onclick="showDashboard()">Dashboard</button>
-          <button class="action-btn" onclick="showAddEndpoint()">Add Endpoint</button>
-          <button class="action-btn" onclick="refreshData()">Refresh Data</button>
-          <button class="action-btn" onclick="showCertificateTemplates()">Certificate Templates</button>
+                  <button class="action-btn" onclick="showDashboard()">Dashboard</button>
+        <button class="action-btn" onclick="showAddEndpoint()">Add Endpoint</button>
+        <button class="action-btn" onclick="refreshData()">Refresh Data</button>
+        <button class="action-btn" onclick="showCertificateTemplates()">Certificate Templates</button>
         </div>
         
         <div id="main-content">
@@ -390,7 +390,7 @@
         </div>
       </div>
     </section>
-    <div class="footer-credit-devops">saadhaniftaj devops project 1</div>
+    <div class="footer-credit-devops">saadhaniftaj's devops final project</div>
     
     <!-- Add Endpoint Modal -->
     <div class="modal" id="addEndpointModal">
@@ -676,7 +676,7 @@
               <div style=\"color:#cfcfcf; font-size:0.97rem; margin-top:0.2em;\">${t.description}</div>
             </div>
             ${imposed
-              ? `<span style=\"color:var(--spotify-yellow);font-weight:900;font-size:1.1rem;\">Imposed</span>`
+              ? `<button class=\"action-btn\" style=\"padding:0.5em 1.5em; font-size:1rem; margin:0; background: linear-gradient(90deg, #ff6b6b, #ff8e8e);\" onclick=\"unimposeCertificate('${t.id}')\">Unimpose</button>`
               : `<button class=\"action-btn\" style=\"padding:0.5em 1.5em; font-size:1rem; margin:0;\" onclick=\"imposeCertificate('${t.id}')\">Impose</button>`}
           </div>
         </div>
@@ -688,7 +688,10 @@
     async function imposeCertificate(certId) {
       // POST to backend
       try {
-        const resp = await fetch(`/api/certificates/${certId}`, { method: 'POST' });
+        const resp = await fetch(`/api/certificates/${certId}`, { 
+          method: 'POST',
+          headers: getAuthHeaders()
+        });
         if (resp.ok) {
           imposedCertificates.push(certId);
           showCertificateTemplates(); // Refresh modal
@@ -699,6 +702,224 @@
         alert('Failed to impose certificate.');
       }
     }
+
+    async function unimposeCertificate(certId) {
+      // DELETE to backend
+      try {
+        const resp = await fetch(`/api/certificates/${certId}`, { 
+          method: 'DELETE',
+          headers: getAuthHeaders()
+        });
+        if (resp.ok) {
+          // Remove from imposed certificates array
+          const index = imposedCertificates.indexOf(certId);
+          if (index > -1) {
+            imposedCertificates.splice(index, 1);
+          }
+          showCertificateTemplates(); // Refresh modal
+        } else {
+          alert('Failed to unimpose certificate.');
+        }
+      } catch (e) {
+        alert('Failed to unimpose certificate.');
+      }
+    }
+    
+    // Secure authentication check with token refresh
+    async function checkAuth() {
+        const token = localStorage.getItem('authToken');
+        const refreshToken = localStorage.getItem('refreshToken');
+        const expires = localStorage.getItem('tokenExpires');
+        const refreshExpires = localStorage.getItem('refreshExpires');
+        
+        // Check if we have any valid tokens
+        if (!token && !refreshToken) {
+            window.location.href = '/login';
+            return false;
+        }
+        
+        // Check if access token is expired
+        if (token && expires && Date.now() >= parseInt(expires)) {
+            // Try to refresh the token
+            if (refreshToken && refreshExpires && Date.now() < parseInt(refreshExpires)) {
+                try {
+                    const response = await fetch('/refresh', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            refresh_token: refreshToken
+                        })
+                    });
+                    
+                    if (response.ok) {
+                        const data = await response.json();
+                        localStorage.setItem('authToken', data.access_token);
+                        localStorage.setItem('refreshToken', data.refresh_token);
+                        localStorage.setItem('tokenExpires', Date.now() + (data.expires_in * 1000));
+                        localStorage.setItem('refreshExpires', Date.now() + (data.refresh_expires_in * 1000));
+                        return true;
+                    } else {
+                        // Refresh failed, clear tokens and redirect
+                        clearTokens();
+                        window.location.href = '/login';
+                        return false;
+                    }
+                } catch (error) {
+                    clearTokens();
+                    window.location.href = '/login';
+                    return false;
+                }
+            } else {
+                // Refresh token expired, clear tokens and redirect
+                clearTokens();
+                window.location.href = '/login';
+                return false;
+            }
+        }
+        
+        return true;
+    }
+    
+    // Clear all tokens securely
+    function clearTokens() {
+        localStorage.removeItem('authToken');
+        localStorage.removeItem('refreshToken');
+        localStorage.removeItem('tokenExpires');
+        localStorage.removeItem('refreshExpires');
+    }
+    
+    // Add auth header to all fetch requests with automatic refresh
+    async function getAuthHeaders() {
+        const token = localStorage.getItem('authToken');
+        if (!token) {
+            throw new Error('No authentication token available');
+        }
+        return {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        };
+    }
+    
+    // Secure logout function
+    async function logout() {
+        try {
+            const headers = await getAuthHeaders();
+            await fetch('/logout', {
+                method: 'POST',
+                headers: headers
+            });
+        } catch (error) {
+            console.error('Logout error:', error);
+        } finally {
+            clearTokens();
+            window.location.href = '/login';
+        }
+    }
+    
+    // Override existing functions to include auth headers with async support
+    async function loadComplianceData() {
+        if (!(await checkAuth())) return;
+        
+        try {
+            const headers = await getAuthHeaders();
+            const response = await fetch('/api/compliance/summary', {
+                headers: headers
+            });
+            if (response.ok) {
+                const data = await response.json();
+                updateMetrics(data);
+            } else if (response.status === 401) {
+                // Token expired, redirect to login
+                window.location.href = '/login';
+            }
+        } catch (error) {
+            console.error('Error loading compliance data:', error);
+            if (error.message.includes('No authentication token')) {
+                window.location.href = '/login';
+            }
+        }
+    }
+    
+    async function loadRecentReports() {
+        if (!(await checkAuth())) return;
+        
+        try {
+            const headers = await getAuthHeaders();
+            const response = await fetch('/api/compliance/reports?limit=5', {
+                headers: headers
+            });
+            if (response.ok) {
+                const reports = await response.json();
+                updateRecentReports(reports);
+            } else if (response.status === 401) {
+                window.location.href = '/login';
+            }
+        } catch (error) {
+            console.error('Error loading recent reports:', error);
+            if (error.message.includes('No authentication token')) {
+                window.location.href = '/login';
+            }
+        }
+    }
+    
+    async function loadDeviceHistory() {
+        if (!(await checkAuth())) return;
+        
+        try {
+            const headers = await getAuthHeaders();
+            const response = await fetch('/api/devices', {
+                headers: headers
+            });
+            if (response.ok) {
+                const devices = await response.json();
+                updateDeviceHistory(devices);
+            } else if (response.status === 401) {
+                window.location.href = '/login';
+            }
+        } catch (error) {
+            console.error('Error loading device history:', error);
+            if (error.message.includes('No authentication token')) {
+                window.location.href = '/login';
+            }
+        }
+    }
+    
+    // Initialize dashboard with secure auth
+    document.addEventListener('DOMContentLoaded', async function() {
+        // Check authentication first
+        if (!(await checkAuth())) {
+            return;
+        }
+        
+        // Add logout button to nav
+        const navContent = document.querySelector('.nav-content');
+        const logoutBtn = document.createElement('button');
+        logoutBtn.textContent = 'Logout';
+        logoutBtn.style.cssText = `
+            background: linear-gradient(90deg, #ff6b6b, #ff8e8e);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-left: auto;
+            transition: all 0.3s ease;
+        `;
+        logoutBtn.onclick = logout;
+        navContent.appendChild(logoutBtn);
+        
+        // Load data with error handling
+        try {
+            await loadComplianceData();
+            await loadRecentReports();
+            await loadDeviceHistory();
+        } catch (error) {
+            console.error('Error initializing dashboard:', error);
+        }
+    });
     </script>
 </body>
 </html> 

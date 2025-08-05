@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CarbonCompliance | Login</title>
+    <link href="https://fonts.googleapis.com/css?family=Inter:400,700,900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --spotify-black: #191414;
+            --spotify-dark: #121212;
+            --spotify-green: #1db954;
+            --spotify-yellow: #ffe066;
+            --spotify-light: #fff;
+            --spotify-grey: #b3b3b3;
+            --spotify-card: #232323;
+            --spotify-card-hover: #25292e;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--spotify-black);
+            color: var(--spotify-light);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+        }
+        
+        body::before {
+            content: "";
+            position: fixed;
+            z-index: 0;
+            left: 0;
+            top: 0;
+            width: 100vw;
+            height: 100vh;
+            background: radial-gradient(ellipse 700px 400px at 15% 15%, #1db95433 0%, transparent 70%), 
+                        radial-gradient(ellipse 700px 400px at 90% 80%, #ffe06622 0%, transparent 66%);
+            pointer-events: none;
+            opacity: 0.65;
+        }
+        
+        .login-container {
+            background: var(--spotify-card);
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 8px 32px rgba(29, 185, 84, 0.2);
+            border: 1px solid #333;
+            max-width: 420px;
+            width: 90%;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .logo {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .logo img {
+            height: auto;
+            width: 200px;
+            max-width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 4px 16px rgba(29, 185, 84, 0.15);
+            object-fit: contain;
+        }
+        
+        .brand-section {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+        
+        .title {
+            text-align: center;
+            font-size: 2.2rem;
+            font-weight: 900;
+            margin-bottom: 0.3rem;
+            background: linear-gradient(90deg, #1db954 30%, #ffe066 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.02em;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: var(--spotify-grey);
+            margin-bottom: 0;
+            font-size: 1rem;
+            font-weight: 500;
+            letter-spacing: 0.02em;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--spotify-green);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 2px solid #333;
+            border-radius: 8px;
+            background: var(--spotify-dark);
+            color: var(--spotify-light);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--spotify-green);
+            box-shadow: 0 0 0 3px rgba(29, 185, 84, 0.1);
+        }
+        
+        .login-btn {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(90deg, #1db954, #ffe066);
+            color: var(--spotify-black);
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 1rem;
+        }
+        
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(29, 185, 84, 0.3);
+        }
+        
+        .login-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .error-message {
+            color: #ff6b6b;
+            text-align: center;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            display: none;
+        }
+        
+        .success-message {
+            color: var(--spotify-green);
+            text-align: center;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            display: none;
+        }
+        
+        .security-info {
+            background: rgba(29, 185, 84, 0.1);
+            border: 1px solid rgba(29, 185, 84, 0.3);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+            font-size: 0.8rem;
+            color: var(--spotify-grey);
+        }
+        
+        .security-info h4 {
+            color: var(--spotify-green);
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            margin-top: 1rem;
+        }
+        
+        .spinner {
+            border: 2px solid #333;
+            border-top: 2px solid var(--spotify-green);
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .particles-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            border-radius: 50%;
+            opacity: 0.85;
+            animation: floatUp 12s linear infinite;
+        }
+        
+        .particle.green { background: #1DB954; }
+        .particle.yellow { background: #ffe066; }
+        
+        @keyframes floatUp {
+            0% { transform: translateY(100vh); opacity: 0.7; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-10vh); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="particles-bg" id="bgParticles"></div>
+    
+    <div class="login-container">
+        <div class="brand-section">
+            <div class="logo">
+                <img src="/static/carbonteq_logo.jpeg" alt="CarbonTeq Logo"/>
+            </div>
+            
+            <h1 class="title">CarbonCompliance</h1>
+            <p class="subtitle">Endpoint Compliance Monitor</p>
+        </div>
+        
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required autocomplete="username">
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required autocomplete="current-password">
+            </div>
+            
+            <div class="error-message" id="errorMessage"></div>
+            <div class="success-message" id="successMessage"></div>
+            
+            <button type="submit" class="login-btn" id="loginBtn">
+                Sign In
+            </button>
+            
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>Authenticating...</p>
+            </div>
+        </form>
+        
+        <div class="security-info">
+            <h4>🔒 Secure Access</h4>
+            <p>This dashboard is protected by JWT authentication with bcrypt password hashing. 
+            Sessions expire after 30 minutes for security.</p>
+        </div>
+    </div>
+    
+    <script>
+        // Create particle background
+        function createParticles() {
+            const particlesBg = document.getElementById('bgParticles');
+            const particleCount = 30;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = `particle ${Math.random() > 0.5 ? 'green' : 'yellow'}`;
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 20 + 's';
+                particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                particlesBg.appendChild(particle);
+            }
+        }
+        
+        // Initialize particles
+        createParticles();
+        
+        // Handle login form with enhanced security
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value;
+            const loginBtn = document.getElementById('loginBtn');
+            const loading = document.getElementById('loading');
+            const errorMessage = document.getElementById('errorMessage');
+            const successMessage = document.getElementById('successMessage');
+            
+            // Input validation
+            if (!username || !password) {
+                errorMessage.textContent = 'Username and password are required.';
+                errorMessage.style.display = 'block';
+                return;
+            }
+            
+            // Hide previous messages
+            errorMessage.style.display = 'none';
+            successMessage.style.display = 'none';
+            
+            // Show loading
+            loginBtn.disabled = true;
+            loading.style.display = 'block';
+            
+            try {
+                const response = await fetch('/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        username: username,
+                        password: password
+                    })
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    
+                    // Store tokens securely
+                    localStorage.setItem('authToken', data.access_token);
+                    localStorage.setItem('refreshToken', data.refresh_token);
+                    localStorage.setItem('tokenExpires', Date.now() + (data.expires_in * 1000));
+                    localStorage.setItem('refreshExpires', Date.now() + (data.refresh_expires_in * 1000));
+                    
+                    // Show success message
+                    successMessage.textContent = 'Login successful! Redirecting...';
+                    successMessage.style.display = 'block';
+                    
+                    // Redirect to dashboard after a short delay
+                    setTimeout(() => {
+                        window.location.href = '/dashboard';
+                    }, 1000);
+                    
+                } else {
+                    const errorData = await response.json();
+                    let errorMsg = errorData.detail || 'Login failed. Please check your credentials.';
+                    
+                    // Handle specific error cases
+                    if (response.status === 429) {
+                        errorMsg = 'Too many login attempts. Please wait before trying again.';
+                    } else if (response.status === 400) {
+                        errorMsg = 'Please provide both username and password.';
+                    }
+                    
+                    errorMessage.textContent = errorMsg;
+                    errorMessage.style.display = 'block';
+                }
+                
+            } catch (error) {
+                errorMessage.textContent = 'Network error. Please try again.';
+                errorMessage.style.display = 'block';
+            } finally {
+                loginBtn.disabled = false;
+                loading.style.display = 'none';
+            }
+        });
+        
+        // Check if user is already logged in
+        window.addEventListener('load', async function() {
+            const token = localStorage.getItem('authToken');
+            const expires = localStorage.getItem('tokenExpires');
+            
+            if (token && expires && Date.now() < parseInt(expires)) {
+                try {
+                    const response = await fetch('/auth/check', {
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    });
+                    
+                    if (response.ok) {
+                        // User is already authenticated, redirect to dashboard
+                        window.location.href = '/dashboard';
+                    } else {
+                        // Token is invalid, clear it
+                        localStorage.removeItem('authToken');
+                        localStorage.removeItem('tokenExpires');
+                    }
+                } catch (error) {
+                    // Network error, clear token
+                    localStorage.removeItem('authToken');
+                    localStorage.removeItem('tokenExpires');
+                }
+            }
+        });
+    </script>
+</body>
+</html> 

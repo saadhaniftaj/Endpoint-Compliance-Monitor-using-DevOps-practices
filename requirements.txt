@@ -4,4 +4,8 @@ streamlit==1.47.1
 psutil==7.0.0
 requests==2.32.4
 python-dotenv==1.1.1
-pydantic==2.11.7 
+pydantic==2.11.7
+schedule==1.2.0
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4
+python-multipart==0.0.6 
